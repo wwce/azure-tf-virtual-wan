@@ -30,7 +30,7 @@ The build demonstrates two VM-Series traffic flows through a virtual WAN hub.
 In the Azure Portal, open cloud shell in **Bash mode**.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/step1.png" width="75%" height="75%" >
+<img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/cloud_shell.png" width="75%" height="75%" >
 </p>    
 
 Run the following commands.  Replace *licensing_option* with your preferred licensing type: byol, bundle1, or bundle2. 
@@ -51,7 +51,7 @@ $ vi terraform.tfvars
 
 <p align="center">
 <b>Your terraform.tfvars should look like this before proceeding</b>
-<img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/step2.png" width="75%" height="75%" >
+<img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/tfvars.png" width="75%" height="75%" >
 </p>      
 
 #### 3. Deploy 
@@ -64,7 +64,7 @@ $ terraform apply
 
 When the deployment finishes, the following output will be displayed. 
 <p align="center">
-<img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/step3.png" width="75%" height="75%" >
+<img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/output.png" width="75%" height="75%" >
 </p>     
 
 
@@ -73,24 +73,28 @@ Once the deployment finishes, paste the **SPOKE-INBOUND-HTTP** output value into
 
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/inbound.png" width="75%" height="75%" >
+<img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/diagram_inbound.png" width="75%" height="75%" >
 </p>    
 
 
-Next, SSH to the web-server by pasting the SPOKE-INBOUND-SSH output into your existing cloud shell.  This SSH session takes the same path as the previous HTTP path.
+Next, SSH to the web-server by pasting the SPOKE-INBOUND-SSH output into your existing cloud shell (**UN/PW: paloalto/Pal0Alt0@123**).  This SSH session takes the same path as the previous HTTP path.
 
 #### 5.  Test Outbound
 After you have logged into the web-server, try to ping/SSH the Ubuntu VM running in the local-spoke VNET (10.3.0.4).  This request will flow through the virtual WAN hub.  The virtual hub routes the traffic to the outbound VM-Series firewalls.  After inspection, the traffic is routed to the locally peered spoke VNET.
 
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/outbound.png" width="75%" height="75%" >
+<img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/diagram_outbound.png" width="75%" height="75%" >
 </p>    
 
 
 #### 6.  View Logs on VM-Series
 
-Log into the VM-Series firewalls using the **MGMT-** output values (UN/PW: **paloalto/Pal0Alt0@123**.  Go to the monitor tab to view the traffic logs. 
+Log into the VM-Series firewalls using the **MGMT-** output values (**UN/PW: paloalto/Pal0Alt0@123**).  Go to the monitor tab to view the traffic logs. 
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/firewall_logs.png" width="75%" height="75%" >
+</p>    
 
 ## Destroy Environment
 Once you ahve tested the enivronment, you can delete the Azure resources by running the follow command from your Azure cloud shell.
