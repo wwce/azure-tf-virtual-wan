@@ -41,7 +41,7 @@ In the Azure Portal, open Azure Cloud Shell in **Bash mode**.
 Run the following commands.  Replace *licensing_option* with your preferred licensing type: byol, bundle1, or bundle2. 
 ```
 # Accept VM-Series EULA for desired license type (BYOL, Bundle1, or Bundle2)
-$ az vm image terms accept --urn paloaltonetworks:vmseries-flex:<licensing_option>:9.0.1
+$ az vm image terms accept --urn paloaltonetworks:vmseries-flex:<licensing_option>:10.0.3
 
 # Download repository
 $ git clone https://github.com/wwce/azure-tf-virtual-wan
