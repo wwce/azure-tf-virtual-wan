@@ -2,12 +2,12 @@
 
 ## Overview 
 
-A terraform build that creates a fully functional environment to demonstrate how the VM-Series can secure Azure Virtual WAN traffic. 
+A terraform build that creates a fully functional environment to demonstrate how the VM-Series can secure Azure Virtual WAN traffic. Approximate time to complete 30 minutes.
 
 
 #### Architecture
 
-The build demonstrates two VM-Series traffic flows through a virtual WAN hub. 
+The build demonstrates the following VM-Series traffic flows through a virtual WAN hub. 
 
 1.  **Inbound traffic**:  Dedicated set of VM-Series firewalls that secure internet inbound requests destined to networks connected to a virtual WAN hub.  
     - Additional firewall sets can be added throughout different Azure regions to achieve a globally scalable inbound security edge.
@@ -68,7 +68,8 @@ When the deployment finishes, the following output will be displayed.
 </p>     
 
 
-#### 4.  Test Inbound 
+## Test Traffic Flows
+#### 1.  Test Inbound 
 <p align="center">
 <img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/diagram_inbound.png" width="75%" height="75%" >
 </p>    
@@ -82,7 +83,7 @@ Once the deployment finishes, paste the **SPOKE-INBOUND-HTTP** output value into
 
 Next, SSH to the web-server by pasting the SPOKE-INBOUND-SSH output into your existing cloud shell (**UN/PW: paloalto/Pal0Alt0@123**).  This SSH session takes the same path as the previous HTTP path.
 
-#### 5.  Test Outbound
+#### 2.  Test Outbound
 After you have logged into the web-server, try to ping/SSH the Ubuntu VM running in the local-spoke VNET (10.3.0.4).  This request will flow through the virtual WAN hub.  The virtual hub routes the traffic to the outbound VM-Series firewalls.  After inspection, the traffic is routed to the locally peered spoke VNET.
 
 
@@ -91,7 +92,7 @@ After you have logged into the web-server, try to ping/SSH the Ubuntu VM running
 </p>    
 
 
-#### 6.  View Logs on VM-Series
+#### 3.  View the VM-Series Traffic Logs
 
 Log into the VM-Series firewalls using the **MGMT-** output values (**UN/PW: paloalto/Pal0Alt0@123**).  Go to the monitor tab to view the traffic logs. 
 
