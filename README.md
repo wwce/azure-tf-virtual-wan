@@ -37,6 +37,7 @@ The build shows two types of traffic flows through a Virtual WAN hub.
 ### 1. Setup & Download Build
 In the Azure Portal, open cloud shell in **Bash mode**.
 
+<p align="center">
 <img src="hhttps://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/step1.png" width="75%" height="75%" >
 </p>    
 
