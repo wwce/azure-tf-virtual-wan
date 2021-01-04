@@ -35,20 +35,22 @@ The build shows two types of traffic flows through a Virtual WAN hub.
 
 ## How to Deploy
 ### 1. Setup & Download Build
-In the Azure Portal, open Azure Cloud Shell in **Bash mode**.
+In the Azure Portal, open cloud shell in **Bash mode**.
 
+<img src="hhttps://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/step1.png" width="75%" height="75%" >
+</p>    
 
 Run the following commands.  Replace *licensing_option* with your preferred licensing type: byol, bundle1, or bundle2. 
 ```
 # Accept VM-Series EULA for desired license type (BYOL, Bundle1, or Bundle2)
 $ az vm image terms accept --urn paloaltonetworks:vmseries-flex:<licensing_option>:10.0.3
 
-# Download repository
-$ git clone https://github.com/wwce/azure-tf-virtual-wan
+# Download repository and change directories
+$ git clone https://github.com/wwce/azure-tf-virtual-wan; cd azure-tf-virtual-wan
 ```
 
 ### 2. Edit terraform.tfvars
-Open terraform.tfvars and uncomment **one** value for fw_license that matches your license type from step 1.
+Open terraform.tfvars and uncomment the fw_license variable that matches your licensing option from step 1. 
 
 ```
 $ vi terraform.tfvars
@@ -56,8 +58,8 @@ $ vi terraform.tfvars
 
 <p align="center">
 <b>Your terraform.tfvars should look like this before proceeding</b>
-<img src="https://raw.githubusercontent.com/wwce/terraform/master/azure/transit_2fw_2spoke_common/images/tfvars.png" width="75%" height="75%" >
-</p>    
+<img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/step2.png" width="75%" height="75%" >
+</p>      
 
 ### 3. Deploy Build
 ```
