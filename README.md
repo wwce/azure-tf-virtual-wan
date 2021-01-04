@@ -1,40 +1,32 @@
-# Panorama Orchestration & Azure Virtual WAN
-Secure Azure Virtual WAN traffic with Palo Alto Networks VM-Series firewalls.  Please see the [Deployment Guide](https://github.com/wwce/azure-arm-virtual-wan/blob/main/GUIDE.pdf) for more information. 
+# VM-Series & Azure Virtual WAN Traffic Demo
 
 ## Overview 
 
-This Terraform build creates a full demo environment of the VM-Series securing Azure Virtual WAN traffic. 
+A terraform build that creates a fully functional environment to demonstrate how the VM-Series can secure Azure Virtual WAN traffic. 
 
 
+#### Architecture
 
-### Architecture
+The build demonstrates two VM-Series traffic flows through a virtual WAN hub. 
 
-The build shows two types of traffic flows through a Virtual WAN hub.  
-
-1.  Internet inbound traffic through a VM-Series scale set to directly connected hub virtual network (vwan-spoke)
-    - Additional scale sets can be added throughout different Azure regions to achieve a globally scalable inbound security edge.
-2.  East-West traffic through a VM-Series scale set from a vwan-spoke to a locally peered virtual network
-    - This design can be integrated into larger infrastructures that have regional hub and spoke architectures.  The VM-Series in each regional hub VNET, can secure ingress traffic coming from virtual WAN hubs.
-    - This can design can also be applied for traffic between ExpressRoute and VNET connections.
+1.  **Inbound traffic**:  Dedicated set of VM-Series firewalls that secure internet inbound requests destined to networks connected to a virtual WAN hub.  
+    - Additional firewall sets can be added throughout different Azure regions to achieve a globally scalable inbound security edge.
+2.  **Outbound traffic**: Dedicated set of VM-Series firewalls that secure lateral traffic traversing through a virtual WAN hub. 
+    - This design can be integrated into larger infrastructures that include regional hub and spoke architectures. 
 
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/wwce/azure-arm-virtual-wan/main/images/overview.png" alt="drawing" width="800"/>
+<img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/overview.png" alt="drawing" width="800"/>
 </p>
 
-### Prerequisites
+## Prerequisites
  
 1.  An active Azure subscription with appropriate permissions and resource allocation quota.
 2.  Access to Azure cloud shell. 
 
 
-
-
-  
-</br>
-
-## How to Deploy
-### 1. Setup & Download Build
+## Deployment
+#### 1. Download Build
 In the Azure Portal, open cloud shell in **Bash mode**.
 
 <p align="center">
@@ -50,8 +42,8 @@ $ az vm image terms accept --urn paloaltonetworks:vmseries-flex:<licensing_optio
 $ git clone https://github.com/wwce/azure-tf-virtual-wan; cd azure-tf-virtual-wan
 ```
 
-### 2. Edit terraform.tfvars
-Open terraform.tfvars and uncomment the fw_license variable that matches your licensing option from step 1. 
+#### 2. Edit terraform.tfvars
+Open terraform.tfvars and uncomment the **fw_license** variable that matches your licensing option from step 1. 
 
 ```
 $ vi terraform.tfvars
@@ -62,101 +54,32 @@ $ vi terraform.tfvars
 <img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/step2.png" width="75%" height="75%" >
 </p>      
 
-### 3. Deploy Build
+### 3. Deploy 
+Run the following commands to initalize and build the environment.  A total of 104 resources will be created.  Deployment time is approximately 25 minutes. 
+
 ```
 $ terraform init
 $ terraform apply
 ```
 
-104 resources will be deployed.  
+
+### 4.  Test Inbound <p align="left">
+<img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/inbound.png" alt="drawing" width="800"/>
+</p>
+Once the deployment finishes, paste the **SPOKE-INBOUND-HTTP** output value into a web-browser.  The URL is the public load balancer's frontend of the inbound VM-Series firewalls.  Once the VM-Series inspects the traffic, a NAT is applied to send inbound request to the virtual WAN hub.
 
 
-### 4.  Test Inbound Flows
+
+Next, SSH to the web-server by pasting the SPOKE-INBOUND-SSH output into your existing cloud shell.  This SSH session takes the same path as the previous HTTP path.
+
+### 5.  Test Outbound<p align="left">
+<img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/outbound.png" alt="drawing" width="800"/>
+</p>
+After you have logged into the web-server, try to ping/SSH the Ubuntu VM running in the local-spoke VNET (10.3.0.4).  This request will flow through the virtual WAN hub.  The virtual hub routes the traffic to the outbound VM-Series firewalls.  After inspection, the traffic is routed to the locally peered spoke VNET.
 
 
-### 5.  Test Lateral Flows
-</br>
-
-## How to Destroy
-Run the following to destroy the build.
+## Destroy Environment
+Run the following command to destroy the build. 
 ```
 $ terraform destroy
 ```
-
-</br>
-
-
-
-
-
-
-**If you do not have the VM-Series deployed, please see [Deployment Guide](https://github.com/wwce/azure-arm-virtual-wan/blob/main/GUIDE.pdf) for how-to.**
-
-</br>
-
-##  Guide
-
-#### <img align="right" width="400" src="https://raw.githubusercontent.com/wwce/azure-arm-virtual-wan/main/images/part1.png"> Part 1:  Create Virtual WAN & Virtual Hub
-
-In this part, a Virtual WAN is created with a virtual hub.  The hub will be used in Parts 2 and 3 to direct traffic from connected spokes to the security VNETs.  If you already have a virtual hub, you can skip this step and proceed to part 2. 
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fwwce%2Fazure-virtual-wan-connect%2Fmain%2Fpart1_wan.json)
-</br>
-</br>
-</br>
-
-#### <img align="right" width="400" src="https://raw.githubusercontent.com/wwce/azure-arm-virtual-wan/main/images/part2.png"> Part 2:  Connect Inbound VM-Series Scale Set to the Virtual Hub 
-Connects an existing security VNET that contains a VM-Series inbound scale set to the virtual hub created in part 1. 
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fwwce%2Fazure-virtual-wan-connect%2Fmain%2Fpart2_connect_inbound.json)
-</br>
-</br>
-</br>
-
-#### <img align="right" width="400" src="https://raw.githubusercontent.com/wwce/azure-arm-virtual-wan/main/images/part3.png"> Part 3:  Connect Outbound VM-Series Scale Set to the Virtual Hub
-Connects an existing security VNET that contains a VM-Series outbound scale set to the virtual hub created in part 1.
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fwwce%2Fazure-virtual-wan-connect%2Fmain%2Fpart3_connect_outbound.json)
-</br>
-</br>
-</br>
-
-#### <img align="right" width="400" src="https://raw.githubusercontent.com/wwce/azure-arm-virtual-wan/main/images/part4.png"> Part 4:  Peer Local VNET to VM-Series Outbound VNET
-Creates a spoke VNET that is peered (via vNet Peering) to the outbound VM-Series VNET.  A route table is created to direct all traffic from the spoke VNET to the outbound firewall's interal load balancer.  A route is also added to the virtual hub's route table.  This route will direct virtual WAN traffic destined to the spoke VNET through the outbound VM-Series VNET connection that was created in part 3.   
-</br>
-</br>
-</br>
-[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fwwce%2Fazure-virtual-wan-connect%2Fmain%2Fpart4_create_peer_spoke.json)
-</br>
-</br>
-</br>
-
-#### <img align="right" width="400" src="https://raw.githubusercontent.com/wwce/azure-arm-virtual-wan/main/images/part5.png"> Part 5:  Connect Spoke VNET to Virtual Hub
-Creates a spoke VNET that is directly connected to the virtual hub created in part 1.  This VNET is used to demonstrate/test internet inbound traffic through the inbound VM-Series and also lateral traffic through the outbound VM-Series its local spoke. 
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fwwce%2Fazure-virtual-wan-connect%2Fmain%2Fpart5_create_vhub_spoke.json)
-
