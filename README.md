@@ -69,11 +69,14 @@ When the deployment finishes, the following output will be displayed.
 
 
 #### 4.  Test Inbound 
-Once the deployment finishes, paste the **SPOKE-INBOUND-HTTP** output value into a web-browser.  The URL is the public load balancer's frontend of the inbound VM-Series firewalls.  Once the VM-Series inspects the traffic, a NAT is applied to send inbound request to the virtual WAN hub.
-
-
 <p align="center">
 <img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/diagram_inbound.png" width="75%" height="75%" >
+</p>    
+
+Once the deployment finishes, paste the **SPOKE-INBOUND-HTTP** output value into a web-browser.  The URL is the public load balancer's frontend of the inbound VM-Series firewalls.  Once the VM-Series inspects the traffic, a NAT is applied to send inbound request through the virtual WAN hub.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/wwce/azure-tf-virtual-wan/main/images/web_request.png" width="75%" height="75%" >
 </p>    
 
 
