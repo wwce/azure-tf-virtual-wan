@@ -183,12 +183,12 @@ resource "azurerm_virtual_machine" "vmseries" {
   plan {
     name      = var.license
     publisher = "paloaltonetworks"
-    product   = "vmseries-flex"
+    product   = var.offer
   }
 
   storage_image_reference {
     publisher = "paloaltonetworks"
-    offer     = "vmseries-flex"
+    offer     = var.offer
     sku       = var.license
     version   = var.panos
   }

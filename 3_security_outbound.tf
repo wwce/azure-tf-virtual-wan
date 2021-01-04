@@ -74,6 +74,7 @@ module "security_outbound_fw" {
   username                  = var.vm_username
   password                  = var.vm_password
   panos                     = var.fw_panos
+  offer                     = var.fw_offer
   license                   = var.fw_license
   nsg_prefix                = var.fw_nsg_prefix
   avset_name                = "${var.security_outbound_prefix}-avset"

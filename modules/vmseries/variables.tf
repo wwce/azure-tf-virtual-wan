@@ -23,6 +23,9 @@ variable avset_fault_domain_count {
 variable panos {
 }
 
+variable offer {
+}
+
 variable license {
 }
 

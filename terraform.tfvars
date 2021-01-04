@@ -9,6 +9,7 @@ global_prefix = ""                                                    # Prefix t
 fw_prefix               = "vmseries"                                         # Adds prefix name to all resources created in the firewall resource group
 fw_vm_count             = 2
 fw_panos                = "10.0.3"
+fw_offer                = "vmseries-flex"
 fw_nsg_prefix           = "0.0.0.0/0"
 vm_username             = "paloalto"
 vm_password             = "Pal0Alt0@123"
