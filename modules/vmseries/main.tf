@@ -87,10 +87,10 @@ resource "azurerm_public_ip" "nic2" {
 # Create firewall interfaces (mgmt, data1, data2).  Dynamic interface is created first, then IP is set statically.
 
 resource "azurerm_network_interface" "nic0" {
-  count                     = var.vm_count
-  name                      = "${var.name}${count.index + 1}-nic0"
-  location                  = var.location
-  resource_group_name       = var.resource_group_name
+  count               = var.vm_count
+  name                = "${var.name}${count.index + 1}-nic0"
+  location            = var.location
+  resource_group_name = var.resource_group_name
 
   ip_configuration {
     name                          = "ipconfig1"
@@ -102,32 +102,32 @@ resource "azurerm_network_interface" "nic0" {
 }
 
 resource "azurerm_network_interface" "nic1" {
-  count                     = var.vm_count
-  name                      = "${var.name}${count.index + 1}-nic1"
-  location                  = var.location
-  resource_group_name       = var.resource_group_name
-  enable_ip_forwarding      = true
+  count                = var.vm_count
+  name                 = "${var.name}${count.index + 1}-nic1"
+  location             = var.location
+  resource_group_name  = var.resource_group_name
+  enable_ip_forwarding = true
 
   ip_configuration {
-    name                                    = "ipconfig1"
-    subnet_id                               = var.subnet_untrust
-    private_ip_address_allocation           = "Dynamic"
-    public_ip_address_id                    = var.nic1_public_ip ? element(concat(azurerm_public_ip.nic1.*.id, list("")), count.index) : ""
+    name                          = "ipconfig1"
+    subnet_id                     = var.subnet_untrust
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = var.nic1_public_ip ? element(concat(azurerm_public_ip.nic1.*.id, list("")), count.index) : ""
   }
 }
 
 resource "azurerm_network_interface" "nic2" {
-  count                     = var.vm_count
-  name                      = "${var.name}${count.index + 1}-nic2"
-  location                  = var.location
-  resource_group_name       = var.resource_group_name
-  enable_ip_forwarding      = true
+  count                = var.vm_count
+  name                 = "${var.name}${count.index + 1}-nic2"
+  location             = var.location
+  resource_group_name  = var.resource_group_name
+  enable_ip_forwarding = true
 
   ip_configuration {
-    name                                    = "ipconfig1"
-    subnet_id                               = var.subnet_trust
-    private_ip_address_allocation           = "Dynamic"
-    public_ip_address_id                    = var.nic2_public_ip ? element(concat(azurerm_public_ip.nic2.*.id, list("")), count.index) : ""
+    name                          = "ipconfig1"
+    subnet_id                     = var.subnet_trust
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = var.nic2_public_ip ? element(concat(azurerm_public_ip.nic2.*.id, list("")), count.index) : ""
   }
 }
 

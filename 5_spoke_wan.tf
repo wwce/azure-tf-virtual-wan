@@ -12,12 +12,12 @@ module "spoke_wan_vnet" {
   subnet_names        = var.spoke_wan_subnet_names
   subnet_cidrs        = var.spoke_wan_subnet_cidrs
   location            = var.location
-  resource_group_name = azurerm_resource_group.spoke_wan_rg.name  
+  resource_group_name = azurerm_resource_group.spoke_wan_rg.name
 }
 
 data "template_file" "web_startup" {
   template = file("${path.module}/scripts/web_startup.yml.tpl")
-  
+
   # depends_on = [
   #   azurerm_virtual_hub.wan,
   #   azurerm_virtual_hub_route_table.wan_rtb,
