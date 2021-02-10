@@ -12,7 +12,7 @@ module "security_outbound_vnet" {
   subnet_names        = var.security_outbound_subnet_names
   subnet_cidrs        = var.security_outbound_subnet_cidrs
   location            = var.location
-  resource_group_name = azurerm_resource_group.security_outbound_rg.name  
+  resource_group_name = azurerm_resource_group.security_outbound_rg.name
 }
 
 #-----------------------------------------------------------------------------------------------------------------
@@ -40,26 +40,26 @@ module "security_outbound_fileshare" {
   quota                = 1
   storage_account_name = azurerm_storage_account.security_outbound_storage.name
   storage_account_key  = azurerm_storage_account.security_outbound_storage.primary_access_key
-  local_file_path        = "bootstrap_files/security_outbound_fw/"
+  local_file_path      = "bootstrap_files/security_outbound_fw/"
 }
 
 #-----------------------------------------------------------------------------------------------------------------
 # Create internal load balancer. Load balancer uses firewall's trust interfaces as its backend pool
 
 module "security_outbound_intlb" {
-  source                  = "./modules/lb/"
-  name                    = "${var.security_outbound_prefix}-internal-lb"
-  resource_group_name      = azurerm_resource_group.security_outbound_rg.name
-  location                 = azurerm_resource_group.security_outbound_rg.location
-  type                    = "private"
-  sku                     = "Standard"
-  probe_ports             = [22]
-  frontend_ports          = [0]
-  backend_ports           = [0]
-  protocol                = "All"
-  subnet_id               = module.security_outbound_vnet.subnet_ids[2]
-  private_ip_address      = var.security_outbound_lb_ip
-  network_interface_ids   = module.security_outbound_fw.nic2_id
+  source                = "./modules/lb/"
+  name                  = "${var.security_outbound_prefix}-internal-lb"
+  resource_group_name   = azurerm_resource_group.security_outbound_rg.name
+  location              = azurerm_resource_group.security_outbound_rg.location
+  type                  = "private"
+  sku                   = "Standard"
+  probe_ports           = [22]
+  frontend_ports        = [0]
+  backend_ports         = [0]
+  protocol              = "All"
+  subnet_id             = module.security_outbound_vnet.subnet_ids[2]
+  private_ip_address    = var.security_outbound_lb_ip
+  network_interface_ids = module.security_outbound_fw.nic2_id
 }
 
 #-----------------------------------------------------------------------------------------------------------------
@@ -98,10 +98,10 @@ module "security_outbound_fw" {
 }
 
 
-output MGMT-OUTBOUND-FW1 {
+output "MGMT-OUTBOUND-FW1" {
   value = "https://${module.security_outbound_fw.nic0_public_ip[0]}"
 }
 
-output MGMT-OUTBOUND-FW2 {
+output "MGMT-OUTBOUND-FW2" {
   value = "https://${module.security_outbound_fw.nic0_public_ip[1]}"
 }

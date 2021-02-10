@@ -44,8 +44,8 @@ resource "azurerm_virtual_hub_connection" "security_outbound_conn" {
     }
 
     static_vnet_route {
-      name = "route0"
-      address_prefixes = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+      name                = "route0"
+      address_prefixes    = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
       next_hop_ip_address = var.security_outbound_lb_ip
     }
   }
@@ -73,7 +73,7 @@ resource "azurerm_virtual_hub_connection" "spoke_wan_conn" {
 
   routing {
     associated_route_table_id = azurerm_virtual_hub_route_table.wan_rtb.id
-    
+
     propagated_route_table {
       labels          = ["default", "spoke"]
       route_table_ids = [azurerm_virtual_hub_route_table.wan_rtb.id]

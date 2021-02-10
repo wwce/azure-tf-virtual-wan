@@ -41,10 +41,10 @@ resource "azurerm_public_ip" "main" {
 }
 
 resource "azurerm_network_interface" "main" {
-  count                     = var.vm_count
-  name                      = "${var.name}${count.index + 1}-nic0"
-  location                  = var.location
-  resource_group_name       = var.resource_group_name
+  count               = var.vm_count
+  name                = "${var.name}${count.index + 1}-nic0"
+  location            = var.location
+  resource_group_name = var.resource_group_name
 
   ip_configuration {
     name                          = "ipconfig1"
@@ -68,7 +68,7 @@ resource "azurerm_network_interface_security_group_association" "main" {
 
 resource "azurerm_virtual_machine" "main" {
   count                            = var.vm_count
-  name                             ="${var.name}${count.index + 1}"
+  name                             = "${var.name}${count.index + 1}"
   location                         = var.location
   resource_group_name              = var.resource_group_name
   network_interface_ids            = [element(azurerm_network_interface.main.*.id, count.index)]

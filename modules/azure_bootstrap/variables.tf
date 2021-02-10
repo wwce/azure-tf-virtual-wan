@@ -1,14 +1,14 @@
-variable storage_account_name {
+variable "storage_account_name" {
 }
 
-variable storage_account_key {
+variable "storage_account_key" {
 }
 
-variable name {
+variable "name" {
 }
 
-variable quota {
+variable "quota" {
 }
 
-variable local_file_path {
+variable "local_file_path" {
 }

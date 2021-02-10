@@ -14,8 +14,8 @@ resource "azurerm_storage_share" "main" {
 }
 
 resource "null_resource" "upload" {
-provisioner "local-exec" {
-  command = <<EOT
+  provisioner "local-exec" {
+    command = <<EOT
 az storage directory create --account-name ${var.storage_account_name} --account-key ${var.storage_account_key} --share-name ${azurerm_storage_share.main.name} --name config
 az storage directory create --account-name ${var.storage_account_name} --account-key ${var.storage_account_key} --share-name ${azurerm_storage_share.main.name} --name content
 az storage directory create --account-name ${var.storage_account_name} --account-key ${var.storage_account_key} --share-name ${azurerm_storage_share.main.name} --name license
@@ -29,7 +29,7 @@ az storage file upload-batch --account-name ${var.storage_account_name} --accoun
 
 
 EOT
-}
+  }
 }
 
 resource "null_resource" "dependency_setter" {
