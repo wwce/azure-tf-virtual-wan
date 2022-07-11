@@ -17,4 +17,3 @@ output nic1_public_ip {
 output nic0_public_ip {
   value = azurerm_public_ip.nic0.*.ip_address
 }
-

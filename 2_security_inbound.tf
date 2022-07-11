@@ -56,7 +56,6 @@ module "security_inbound_fw" {
   username                  = var.vm_username
   password                  = var.vm_password
   panos                     = var.fw_panos
-  offer                     = var.fw_offer
   license                   = var.fw_license
   nsg_prefix                = var.fw_nsg_prefix
   avset_name                = "${var.security_inbound_prefix}-avset"
@@ -73,8 +72,8 @@ module "security_inbound_fw" {
   bootstrap_file_share      = module.security_inbound_fileshare.file_share_name
   bootstrap_share_directory = "None"
   
-  dependencies = [
-    module.security_inbound_fileshare.completion
+  depends_on = [
+    module.security_inbound_fileshare
   ]
 }
 

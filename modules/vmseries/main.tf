@@ -1,9 +1,3 @@
-resource "null_resource" "dependency_getter" {
-  provisioner "local-exec" {
-    command = "echo ${length(var.dependencies)}"
-  }
-}
-
 #-----------------------------------------------------------------------------------------------------------------
 # Create NSGs for firewall dataplane interfaces (required for Standard SKU LB)
 resource "azurerm_network_security_group" "mgmt" {
@@ -96,7 +90,7 @@ resource "azurerm_network_interface" "nic0" {
     name                          = "ipconfig1"
     subnet_id                     = var.subnet_mgmt
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = var.nic0_public_ip ? element(concat(azurerm_public_ip.nic0.*.id, list("")), count.index) : ""
+    public_ip_address_id          = var.nic0_public_ip ? element(concat(azurerm_public_ip.nic0.*.id, [""]), count.index) : ""
 
   }
 }
@@ -112,7 +106,7 @@ resource "azurerm_network_interface" "nic1" {
     name                                    = "ipconfig1"
     subnet_id                               = var.subnet_untrust
     private_ip_address_allocation           = "Dynamic"
-    public_ip_address_id                    = var.nic1_public_ip ? element(concat(azurerm_public_ip.nic1.*.id, list("")), count.index) : ""
+    public_ip_address_id                    = var.nic1_public_ip ? element(concat(azurerm_public_ip.nic1.*.id, [""]), count.index) : ""
   }
 }
 
@@ -127,7 +121,7 @@ resource "azurerm_network_interface" "nic2" {
     name                                    = "ipconfig1"
     subnet_id                               = var.subnet_trust
     private_ip_address_allocation           = "Dynamic"
-    public_ip_address_id                    = var.nic2_public_ip ? element(concat(azurerm_public_ip.nic2.*.id, list("")), count.index) : ""
+    public_ip_address_id                    = var.nic2_public_ip ? element(concat(azurerm_public_ip.nic2.*.id, [""]), count.index) : ""
   }
 }
 
@@ -183,12 +177,12 @@ resource "azurerm_virtual_machine" "vmseries" {
   plan {
     name      = var.license
     publisher = "paloaltonetworks"
-    product   = var.offer
+    product   = "vmseries-flex"
   }
 
   storage_image_reference {
     publisher = "paloaltonetworks"
-    offer     = var.offer
+    offer     = "vmseries-flex"
     sku       = var.license
     version   = var.panos
   }
@@ -214,8 +208,4 @@ resource "azurerm_virtual_machine" "vmseries" {
       ],
     )
   }
-  depends_on = [
-    null_resource.dependency_getter
-  ]
-
 }

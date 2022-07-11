@@ -23,9 +23,6 @@ variable avset_fault_domain_count {
 variable panos {
 }
 
-variable offer {
-}
-
 variable license {
 }
 
@@ -36,7 +33,7 @@ variable password {
 }
 
 variable name {
-  default = "vmseries-flex"
+  default = "vmseries"
 }
 
 variable nsg_prefix {
@@ -95,11 +92,6 @@ variable nic1_backend_pool_id {
 }
 
 variable nic2_backend_pool_id {
-  type    = list(string)
-  default = []
-}
-
-variable dependencies {
   type    = list(string)
   default = []
 }
